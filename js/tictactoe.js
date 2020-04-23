@@ -3,7 +3,7 @@
 window.onload=function(){watch()};
 function watch(){
     var btn=document.getElementById('btnStop');
-    btn.Disabled(btn); // disable the stop button since the game has not started
+    btnDisabled(btn); // disable the stop button since the game has not started
 }
 
 // this function will roll for random number twice, one for
