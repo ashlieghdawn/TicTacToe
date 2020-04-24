@@ -13,8 +13,8 @@ function rollForTurn(){
     var ranNum='';
     var minimum=1;
     var maximum=11;
-var first="";
-var txt1="";
+    var first="";
+    var txt1="";
     for (var i=0; i<2;i++){
         //random whole number between 1 and 10
         ranNum=Math.floor(Math.random()*(maximum-minimum)+minimum);
@@ -23,32 +23,38 @@ var txt1="";
 diceRoll();//play dice sounds during the game roll for turn
 // build the string to show which player rolled what die roll
 for(i=0;i<xArray.length;i++){
+    var result=i+1;
     var pOne=xArray[0];
-        var pTwo=xArray[1];
-        if (pOne==pTwo){//rigging roll on tie to avoid bug in code. Need to address this later...
-            pOne=1;
-            pTwo=2;
-        }
+    var pTwo=xArray[1];
+    if (pOne==pTwo){//rigging roll on tie to avoid bug in code. Need to address this later...
+        pOne=1;
+        pTwo=2;
+    }
     txt1="Player 1 rolled ["+pOne+"]<br>";
     writeMsg(txt1);
     txt1=txt1+"Player 2 rolled ["+pTwo+"]<br><br>";
     setTimeout(function(){writeMsg(txt1);}, 1000); //time delay for dramatic effect
 }
-    //determine and concatenate string showing which player won the roll
+//determine and concatenate string showing which player won the roll
 if (pOne>pTwo){
     first="Player1";
     setTimeout(function(){txt1=txt1+"Player 1 wins, please choose a square";},2000);
     setTimeout(function(){writeMsg(txt1);},2000);
+} else if (pOne<pTwo){
+    first="Player2";
+    setTimeout(function(){txt1=txt1+"Player 2 wins, please choose a square.";}, 2000);
+    setTimeout(function(){writeMsg(txt1);}, 2000);
 }
     //pass which player won the roll
     return first;
 }
 
+
 //--------------------------------------------------------------------
 // initiate the game, roll for turn and determine the active player
 //--------------------------------------------------------------------
 function startGame(){
-    varxTurn=0;
+    var xTurn=0;
     activePlayer=rollForTurn();
 if(activePlayer==""){//if it was a tie, then reroll
     activePlayer=rollForTurn();
@@ -112,7 +118,7 @@ function stopGame(){
         arrayX[i].style.transform="translateY(100%)";
     }
     // this clears the running log of all game moves
-    document.getElementsById('boardState').innerHTML="";
+    document.getElementById('boardState').innerHTML="";
 }
 
 //this function will show the message console and any text it may have
@@ -141,15 +147,23 @@ function clearMsg(){
 // proposed avatar assignments and prevents them from being the same
 function saveSettings(){
     var p1Index=document.getElementById("player1").selectedIndex;
-        var p1Selected=document.getElementById("player1").options;
+    var p1Selected=document.getElementById("player1").options;
     var p2Index=document.getElementById("player2").selectedIndex;
-        var p2Selected=document.getElementById("player2").options;
+    var p2Selected=document.getElementById("player2").options;
     if (p1Selected[p1Index].text==p2Selected[p2Index].text){
         alert("Error - Player 1 and Player 2 cannot both be assigned as: "+p1Selected[p1Index].text)
     } else{
         document.getElementById('p1display').innerHTML=p1Selected[p1Index].text;
         document.getElementById('p2Display').innerHTML=p2Selected[p2Index].text;
     }
+}
+
+//this function return's the currently assigned avatar for each player
+function getAvatars(){
+    var p1Avatar=document.getElementById("p1Display").innerHTML;
+    var p2Avatar=document.getElementById("p2Display").innerHTML;
+    var avatarArray=[p1Avatar,p2Avatar];
+    return avatarArray;
 }
 
 // this function will return the active player's avatar
@@ -200,7 +214,7 @@ function check (info, square){
 // square has already been assigned and if it has not, record new square with the assigned avatar.
 function recordMoves(square){
     var proposedMove=square;
-    varboardState=document.getElementById('boardState').innerHTML; // retrieve boardState array
+    var boardState=document.getElementById('boardState').innerHTML; // retrieve boardState array
     var info=boardState.split(','); // separate the string by commas to create an array
     verdict=check(info, square); //call function to check if poroposed square is already occupied
     return verdict;
@@ -220,19 +234,19 @@ function checkForWinCon(){
     var info=target.innerHTML; // raw array with squares and avatars
     info=info.substring(1); // remove leading comma
     info=info.split(','); // separate the string by commas into an array
-        info.sort(); //sort the square array in order despite the actual gameplay sequence
-        for(var i in info){
-            squareArray.push(info[i].charAt(0)); // new array with only squares not avatars
-        }
-        // call this following array of cuntions to hceck for any of the possible win cons
-        checkWinCon1(info,squareArray);
-        checkWinCon2(info,squareArray);
-        checkWinCon3(info,squareArray);
-        checkWinCon4(info,squareArray);
-        checkWinCon5(info,squareArray);
-        checkWinCon6(info,squareArray);
-        checkWinCon7(info,squareArray);
-        checkWinCon8(info,squareArray);
+    info.sort(); //sort the square array in order despite the actual gameplay sequence
+    for(var i in info){
+        squareArray.push(info[i].charAt(0)); // new array with only squares not avatars
+    }
+    // call this following array of cuntions to hceck for any of the possible win cons
+    checkWinCon1(info,squareArray);
+    checkWinCon2(info,squareArray);
+    checkWinCon3(info,squareArray);
+    checkWinCon4(info,squareArray);
+    checkWinCon5(info,squareArray);
+    checkWinCon6(info,squareArray);
+    checkWinCon7(info,squareArray);
+    checkWinCon8(info,squareArray);
         // console.log("New CHECK: " +document.getElementbyId('gameMsg).innerHTML);
         check4Tie();
 }
@@ -289,7 +303,7 @@ function glowBoard(pos){
             setTimeout(function(){bg1.style.backgroundColor='rgb(197,244,66)';}, 800);
             setTimeout(function(){bg1.style.backgroundColor='rgb(122,244,235)';}, 900);
             setTimeout(function(){bg1.style.backgroundColor='rgb(66,244,235)';}, 1000);
-            aetTimeout(function(){bg1.style.backgroundColor='#d7f3f7';}, 1100);
+            setTimeout(function(){bg1.style.backgroundColor='#d7f3f7';}, 1100);
         } else if(i==index1){
             var bg2=squares[i];
             setTimeout(function(){bg2.style.backgroundColor='rgb(66,244,235)';},100);
@@ -325,13 +339,18 @@ function glowBoard(pos){
 function squareSound(){
     var sound=document.getElementById("placeAvatar");
         sound.play();
-            setTimeout(function(){sound.onpause();},400); // add delay to these keep sound short
+            setTimeout(function(){sound.pause();},400); // add delay to these keep sound short
             setTimeout(function(){sound.currentTime=0;},500);
+}
+function tieSound(){
+    var sound=document.getElementById("tieGame");
+    var check=document.getElementById('gameMsg').innerHTML;
+    setTimeout(function(){sound.play();}, 500);
 }
 function winSound(){
     var sound=document.getElementById("winGame");
-    setTimeout(function(){sound.play();},500);
-    setTimeout(function(){sound.onpause();},2700); // add delay to these to keep sound short
+    setTimeout(function(){sound.play();}, 500);
+    setTimeout(function(){sound.pause();}, 2700); // add delay to these to keep sound short
     setTimeout(function(){sound.currentTime=0;},2800);
 }
 function diceRoll(){
@@ -342,7 +361,7 @@ function diceRoll(){
 // call this function to make entire background color
 // flash for a few seconds for a win animation
 function blink(){
-    var body=doucment.getElementById('body');
+    var body=document.getElementById('body');
     setTimeout(function(){body.style.backgroundColor='#94f7ed';},100);
     setTimeout(function(){body.style.backgroundColor='#94cef7';},200);
     setTimeout(function(){body.style.backgroundColor='#94a6f7';},300);
@@ -387,7 +406,7 @@ function checkWinCon1(info,squareArray){
             return;
         }
     }
-    winner(inDetected,winCon1); // winCon1 is the array of win combo
+    winner(winDetected,winCon1); // winCon1 is the array of win combo
 }
 
 //checking for wincon squares 345
@@ -405,11 +424,10 @@ function checkWinCon2(info, squareArray){
             var match5Avatar=info[i].charAt(1);
         }
     }
-    if (match3Avatar != undefined && match4Avatar != undefined && match5Avatar != undefined){ // this will
-    // trigger (ONLY) if there was a match for index3, index4, and index5
-    if (match3Avatar==match4Avatar && match3Avatar == match5Avatar){
+    if (match3Avatar != undefined && match4Avatar != undefined && match5Avatar != undefined){ // this will trigger (ONLY) if there was a match for index3, index4, and index5
+        if (match3Avatar==match4Avatar && match3Avatar == match5Avatar){
         winDetected="win";
-    }
+        }
     }
     winner(winDetected,winCon2);
 }
@@ -581,7 +599,7 @@ function square1Animate(){
 function square2Animate(){
     var activePlayer=document.getElementById('showPlayer').innerHTML;
     if (activePlayer != "Game Stopped"){ //if game has not yet started prevent avatar placement
-        var square="O"; //identify the square selected
+        var square="1"; //identify the square selected
         //check if the proposed square is valid
         var verdict=recordMoves(square);
         if(verdict==undefined){ // if verdict is empty then the square is unoccupied
@@ -604,7 +622,7 @@ function square2Animate(){
 function square3Animate(){
     var activePlayer=document.getElementById('showPlayer').innerHTML;
     if (activePlayer != "Game Stopped"){ //if game has not yet started prevent avatar placement
-        var square="O"; //identify the square selected
+        var square="2"; //identify the square selected
         //check if the proposed square is valid
         var verdict=recordMoves(square);
         if(verdict==undefined){ // if verdict is empty then the square is unoccupied
@@ -627,7 +645,7 @@ function square3Animate(){
 function square4Animate(){
     var activePlayer=document.getElementById('showPlayer').innerHTML;
     if (activePlayer != "Game Stopped"){ //if game has not yet started prevent avatar placement
-        var square="O"; //identify the square selected
+        var square="3"; //identify the square selected
         //check if the proposed square is valid
         var verdict=recordMoves(square);
         if(verdict==undefined){ // if verdict is empty then the square is unoccupied
@@ -650,7 +668,7 @@ function square4Animate(){
 function square5Animate(){
     var activePlayer=document.getElementById('showPlayer').innerHTML;
     if (activePlayer != "Game Stopped"){ //if game has not yet started prevent avatar placement
-        var square="O"; //identify the square selected
+        var square="4"; //identify the square selected
         //check if the proposed square is valid
         var verdict=recordMoves(square);
         if(verdict==undefined){ // if verdict is empty then the square is unoccupied
@@ -673,7 +691,7 @@ function square5Animate(){
 function square6Animate(){
     var activePlayer=document.getElementById('showPlayer').innerHTML;
     if (activePlayer != "Game Stopped"){ //if game has not yet started prevent avatar placement
-        var square="O"; //identify the square selected
+        var square="5"; //identify the square selected
         //check if the proposed square is valid
         var verdict=recordMoves(square);
         if(verdict==undefined){ // if verdict is empty then the square is unoccupied
@@ -696,7 +714,7 @@ function square6Animate(){
 function square7Animate(){
     var activePlayer=document.getElementById('showPlayer').innerHTML;
     if (activePlayer != "Game Stopped"){ //if game has not yet started prevent avatar placement
-        var square="O"; //identify the square selected
+        var square="6"; //identify the square selected
         //check if the proposed square is valid
         var verdict=recordMoves(square);
         if(verdict==undefined){ // if verdict is empty then the square is unoccupied
@@ -719,7 +737,7 @@ function square7Animate(){
 function square8Animate(){
     var activePlayer=document.getElementById('showPlayer').innerHTML;
     if (activePlayer != "Game Stopped"){ //if game has not yet started prevent avatar placement
-        var square="O"; //identify the square selected
+        var square="7"; //identify the square selected
         //check if the proposed square is valid
         var verdict=recordMoves(square);
         if(verdict==undefined){ // if verdict is empty then the square is unoccupied
@@ -742,7 +760,7 @@ function square8Animate(){
 function square9Animate(){
     var activePlayer=document.getElementById('showPlayer').innerHTML;
     if (activePlayer != "Game Stopped"){ //if game has not yet started prevent avatar placement
-        var square="O"; //identify the square selected
+        var square="8"; //identify the square selected
         //check if the proposed square is valid
         var verdict=recordMoves(square);
         if(verdict==undefined){ // if verdict is empty then the square is unoccupied

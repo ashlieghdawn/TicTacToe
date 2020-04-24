@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>HTML & CSS Basics Course</title>
-        <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+        <title>Tic Tac Toe Game</title>
+        <META http-equiv="content-type" CONTENT="text/html" charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <link rel="stylesheet" type="text/css" href="./css/game.css">
+        <link rel="stylesheet" type="text/css" href="css/game.css">
         <style></style>
     </head>
     <body id="body">
         <audio id="placeAvatar">
-            <source src="./audio/placeAvator.mp3" type="audio/mpeg">
+            <source src="media/placeAvatar.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
         </audio>
         <audio id="winGame">
-            <source src="./audio/winGame.mp3" type="audio/mpeg">
+            <source src="media/winGame.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
         </audio>
         <audio id="tieGame">
-            <source src="./audio/tieGame.mp3" type="audio/mpeg">
+            <source src="media/tieGame.mp3" type="audio/mpeg">
                 Your browswer does not support the adio element.
         </audio>
         <audio id="diceRoll">
-            <source src="./audio/diceRoll.mp3" type="audio/mpeg">
+            <source src="media/diceRoll.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
         </audio>
         <div id="shell">
@@ -30,8 +30,8 @@
             <div class="console_Left">
                 <div class="displayBox boxLeft">
                     <strong>Current Config:</strong><br><br>
-                    <label>Player 1: &nbsp&nbsp<span id="p1Display">O</span></label><br>
-                    <label>Player 2: &nbsp&nbsp<span id="p2Display">X</span></label>
+                    <label>Player 1: &nbsp;&nbsp;<span id="p1Display">O</span></label><br>
+                    <label>Player 2: &nbsp;&nbsp;<span id="p2Display">X</span></label>
                 </div>
                 <div class=""><button id="btnStart" onclick="startGame()">Start Game</button></div>
                 <div id="boardState"></div>
@@ -126,24 +126,27 @@
 
             <div class="console_Right" style="float:right;">
                 <div class="displayBox boxRight">
-                    <strong>Configuration</strong><br><br>
-                    <label>Player 1: </label><select id="player1" value="X"><option value="X">X</option><option value="O">O</option></select><br>
-                    <label>Player 2: </label><select id="player2" value="X"><option value="X">X</option><option value="O">O</option></select>
+                    <strong>Configuration: </strong><br><br>
+                    <label>Player 1: </label><select id="player1"><option value="X">X</option><option value="O">O</option></select><br>
+                    <label>Player 2: </label><select id="player2"><option value="X">X</option><option value="O">O</option></select>
                     <button onclick="saveSettings()">Save Config</button>
                 </div> 
+                <div id="controls">
+                    <button id="btnStop" onclick="stopGame()">Stop Game</button>
+                </div>
             </div>
         </div>
         <script>
             var arrayO=document.getElementsByClassName("O");
             var arrayX=document.getElementsByClassName("X");
-            for (var i=0; i<arrayO.length;i++)(
-                arrayO[i].style.transform="translate-Y(-100%)"; //This initializes all avatar graphics to not be visible as translateY(0%) would make them appear
-            )
-            for( vari=0; i<arrayX.length;i++) (
+            for (var i=0; i<arrayO.length;i++){
+                arrayO[i].style.transform="translateY(-100%)" //This initializes all avatar graphics to not be visible as translateY(0%) would make them appear
+            }
+            for(var i=0; i<arrayX.length;i++){
                 arrayX[1].style.transform="translateY(100%)";
-            )
+            }
         </script>
-        <script src="./js/tictactoe.js"></script>
+        <script src="js/tictactoe.js"></script>
 
     </body>
 </html>
